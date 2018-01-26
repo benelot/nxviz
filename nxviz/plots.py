@@ -83,6 +83,8 @@ class BasePlot(object):
 
         # Set node radius
         self.node_size = node_size
+        if node_size:
+            self.node_sizes = [self.graph.node[n][self.node_size] for n in self.nodes]
 
         # Set node colors
         self.node_color = node_color
@@ -320,7 +322,11 @@ class CircosPlot(BasePlot):
             x = self.node_coords['x'][i]
             y = self.node_coords['y'][i]
             color = self.node_colors[i]
-            node_patch = patches.Circle((x, y), node_r,
+            if self.node_size:
+                node_size = self.node_sizes[i]
+            else:
+                node_size = node_r
+            node_patch = patches.Circle((x, y), node_size,
                                         lw=lw, color=color,
                                         zorder=2)
             self.ax.add_patch(node_patch)
