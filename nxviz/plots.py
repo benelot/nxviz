@@ -97,6 +97,8 @@ class BasePlot(object):
 
         # Set edge properties
         self.edge_width = edge_width
+        if edge_width:
+            self.edge_widths = [self.graph.node[n][self.edge_width] for n in self.nodes]
         self.edge_color = edge_color
 
         # Set data_types dictionary
@@ -346,7 +348,13 @@ class CircosPlot(BasePlot):
             codes = [Path.MOVETO, Path.CURVE3, Path.CURVE3]
 
             path = Path(verts, codes)
-            patch = patches.PathPatch(path, lw=1, **self.edgeprops, zorder=1)
+
+            if self.edge_width:
+                edge_width = self.node_widths[i]
+            else:
+                edge_width = 1
+
+            patch = patches.PathPatch(path, lw=edge_width, **self.edgeprops, zorder=1)
             self.ax.add_patch(patch)
 
 
